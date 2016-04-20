@@ -78,8 +78,8 @@
     <widget class="QWidget" name="horizontalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>-1</x>
-       <y>-1</y>
+       <x>0</x>
+       <y>0</y>
        <width>861</width>
        <height>451</height>
       </rect>
@@ -270,8 +270,31 @@
     <addaction name="actionManage_programs"/>
     <addaction name="actionManage_components"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionSet_Gas"/>
+    <addaction name="actionAdd_WinCC_data"/>
+    <addaction name="actionAdd_Generator_data"/>
+    <addaction name="actionSet_Parameters"/>
+    <addaction name="actionSet_Manual_Position"/>
+    <addaction name="actionConvert_to_Real_Pos"/>
+    <addaction name="actionCalculate_density"/>
+   </widget>
+   <widget class="QMenu" name="menuAdmin">
+    <property name="title">
+     <string>Admin</string>
+    </property>
+    <addaction name="actionReinitialize_Shot_database"/>
+    <addaction name="actionImport_Mapping_from_CSV"/>
+    <addaction name="actionExport_Mapping_from_CSV"/>
+    <addaction name="actionReload_Signal_Database"/>
+   </widget>
    <addaction name="menuAction"/>
    <addaction name="menuProgram"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuAdmin"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionQuit">
@@ -287,6 +310,64 @@
   <action name="actionManage_components">
    <property name="text">
     <string>Manage components</string>
+   </property>
+  </action>
+  <action name="actionSet_Gas">
+   <property name="text">
+    <string>Set Gas</string>
+   </property>
+  </action>
+  <action name="actionAdd_WinCC_data">
+   <property name="text">
+    <string>Add WinCC data</string>
+   </property>
+  </action>
+  <action name="actionAdd_Generator_data">
+   <property name="text">
+    <string>Add Generator data</string>
+   </property>
+  </action>
+  <action name="actionReinitialize_Shot_database">
+   <property name="text">
+    <string>Reinitialize Shot database</string>
+   </property>
+  </action>
+  <action name="actionImport_Mapping_from_CSV">
+   <property name="text">
+    <string>Import Mapping from CSV</string>
+   </property>
+  </action>
+  <action name="actionSet_Parameters">
+   <property name="text">
+    <string>Set Parameters</string>
+   </property>
+  </action>
+  <action name="actionReload_Signal_Database">
+   <property name="text">
+    <string>Reload Signal Database</string>
+   </property>
+  </action>
+  <action name="actionSet_Manual_Position">
+   <property name="text">
+    <string>Set Manual Position</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionExport_Mapping_from_CSV">
+   <property name="text">
+    <string>Export Mapping from CSV</string>
+   </property>
+  </action>
+  <action name="actionConvert_to_Real_Pos">
+   <property name="text">
+    <string>Convert to Real Pos</string>
+   </property>
+  </action>
+  <action name="actionCalculate_density">
+   <property name="text">
+    <string>Calculate density</string>
    </property>
   </action>
  </widget>

@@ -95,16 +95,27 @@ class PlotView(QDialog, Ui_plot):
         
     def plot(self):
         l1=self.signalWidget.selectedItems()
-        n=len(l1)
         table=[]
         listsignal=[]
+        for i in reversed(range(self.verticalLayout.count())): 
+            self.verticalLayout.itemAt(i).widget().setParent(None)
+        ii=0
         for x in l1:
-            aa=pg.plotWidget()
+            if ii==0:
+                a0=pg.PlotWidget()
+                aa=a0                
+            else:
+                aa=pg.PlotWidget()
             table.append(aa)
             sig=x.text()
             listsignal.append(sig)
             self.verticalLayout.addWidget(aa)
             result=gil.getSignal(self.shots,[sig])
-            aa.plot()
-        
+            #print result.xs()
+            for x in self.shots:
+               # print result.xs(x)[sig].values
+                aa.plot(result.xs(x).index.values,result.xs(x)[sig].values)
+            if ii>0:
+                aa.setXLink(a0)
+            ii=ii+1
         

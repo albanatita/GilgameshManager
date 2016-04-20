@@ -6,9 +6,7 @@ Created on Mon May 11 11:38:05 2015
 """
 
 import os
-import win32file
-import win32event
-import win32con
+import time
 import Queue
 import ConvertFiles
 from PyQt4 import QtCore
@@ -23,36 +21,42 @@ class fileWatcher(QtCore.QThread):
         self.env=env
         
     def run(self):
-    
-        change_handle=win32file.FindFirstChangeNotification (self.path_to_watch,0,win32con.FILE_NOTIFY_CHANGE_FILE_NAME)
+        self.msg("Starting file watcher")
         try:
             old_path_contents=dict([(f,None) for f in os.listdir (self.path_to_watch)])
             while 1:
-                result=win32event.WaitForSingleObject(change_handle,500)
+                time.sleep (10)
                 
-                if result==win32con.WAIT_OBJECT_0:
-                    new_path_contents=dict([(f,None) for f in os.listdir (self.path_to_watch)])
-                    added=[f for f in new_path_contents if not f in old_path_contents]
+
+                new_path_contents=dict([(f,None) for f in os.listdir (self.path_to_watch)])
+                added=[f for f in new_path_contents if not f in old_path_contents]
 #                    deleted=[f for f in old_path_contents if not f in new_path_contents]
-                    for f in added:
-                        fileName, fileExtension = os.path.splitext(f)
-                                       
-                        self.msg('Converting '+fileName + '\n')                    
-                        
-                        
-                        try:                
-                            getattr(ConvertFiles,'convert_'+fileExtension[1:])(fileName,True,self.env)
+                for f in added:
+                    fileName, fileExtension = os.path.splitext(f)
+                                   
+                    self.msg('Converting '+fileName + '\n')                    
+                    
+                    
+                    try:                
+                        result=getattr(ConvertFiles,'convert_'+fileExtension[1:])(fileName,True,self.env)
+                        if fileExtension[1:]=='tdms':
+                            shot=int(fileName[0:-5])
                             self.msg('File succesfully converted to hdf5.')
-                        #self.emit(QtCore.SIGNAL('converted(QString)'),fileName)
-                            
-                        except :
+                            self.emit(QtCore.SIGNAL('newshot'),shot)
+                    #self.emit(QtCore.SIGNAL('converted(QString)'),fileName)
+                        if fileExtension[1:]=='csv':
+                            shot=int(fileName[7:])
+                            self.msg('CSV succesfully imported.')
+                            self.emit(QtCore.SIGNAL('newcsv'),shot,result)
+                        
+                    except :
 #                            print str(e)
-                            self.msg( "Unknown format..: "+fileExtension[1:]+'\n')
-                            
-                    old_path_contents=new_path_contents
-                    win32file.FindNextChangeNotification(change_handle)
-        finally:
-            win32file.FindCloseChangeNotification (change_handle)
+                        self.msg( "Unknown format..: "+fileExtension[1:]+'\n',0)
+                        
+                old_path_contents=new_path_contents
+
+        except:
+            print "error"
            
             
     def msg(self,text):

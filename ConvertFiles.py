@@ -10,6 +10,7 @@ import h5py
 import os
 import time
 import re
+import gilgamesh.environmentGilga as envG
 #import readHdf5
 
 def convert_tdms(fileName,tempo,env):
@@ -18,7 +19,7 @@ def convert_tdms(fileName,tempo,env):
     path=env.path
     tdms_file=TdmsFile(os.path.join(path,fileName+'.tdms'))
    # tdms_file=TdmsFile(r'D:\DATA\00838_Data.tdms')
-    hdf5=h5py.File(path+os.sep+fileName+'.h5','w')
+    hdf5=h5py.File(envG.H5path+fileName+'.h5','w')
     #channel=tdms_file.object('PXI M6251','Lang_U')
     #group=tdms_file.object('PXI M6251')
     grouplist=tdms_file.groups()
@@ -55,24 +56,25 @@ def convert_tdms(fileName,tempo,env):
 #    conn.commit()
     hdf5.create_group('Process')
     hdf5.close()
+    return 1
     #env.process.addFile(fileName)
 
-#def convert_csv(fileName,tempo,env):
-#    path=env.path
-#    if tempo:    
-#        time.sleep(2)   
-#    try:
-#        inputfile=open(path+os.sep+fileName+'.csv')
-#        #inputfile.next()
-#        print inputfile.readline()
-#        #timei=datetime.datetime.strptime(inputfile.readline()[13:-1],'%d.%m.%Y %H:%M:%S')
-#        timei=inputfile.readline()[13:-1]        
-#    #print timei
-#        h5file=fileName[7:].zfill(5)+'_Data'
-#    #print h5file
-#        readHdf5.saveAttr(h5file,'date',timei,env)  
-#    #print h5file      
-#        env.process.updateShot([h5file])
-#    except:
-#        print "Doesn't work"
+def convert_csv(fileName,tempo,env):
+    path=env.path
+    if tempo:    
+        time.sleep(2)   
+    try:
+        inputfile=open(path+os.sep+fileName+'.csv')
+        #inputfile.next()
+        print inputfile.readline()
+        #timei=datetime.datetime.strptime(inputfile.readline()[13:-1],'%d.%m.%Y %H:%M:%S')
+        timei=inputfile.readline()[13:-1]        
+    #print timei
+        #h5file=fileName[7:].zfill(5)+'_Data'
+    #print h5file
+    #    readHdf5.saveAttr(h5file,'date',timei,env)  
+    #print h5file      
+    except:
+        print "Doesn't work"
+    return timei
 
