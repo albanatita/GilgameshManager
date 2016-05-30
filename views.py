@@ -41,7 +41,7 @@ class LangmuirView(QDialog, Ui_langmuir):
         self.verticalLayout.addWidget(self.plotI)
         self.horizontalLayout.addWidget(self.plotIV)
         component=cpt.loadFromShot(self.shot)
-        liste=component.findElement([],cpt.LangmuirProbe)
+        liste=component.findElement(cpt.LangmuirProbe)
         self.listprobes=dict()
         for y in liste:
             self.langlistWidget.addItem(y.name)

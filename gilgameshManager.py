@@ -144,7 +144,7 @@ class densDialog(QDialog):
         # display only probes common to all shots
         for x in self.shots:
             component=cpt.loadFromShot(x)
-            listname=component.findElement([],cpt.LangmuirProbe)
+            listname=component.findElement(cpt.LangmuirProbe)
             liste.append([z.name for z in listname])
         result = set(liste[0])
         for s in liste[1:]:
@@ -158,7 +158,7 @@ class densDialog(QDialog):
          self.langmuirname=self.ui.listWidget.selectedItems()[0].text()
          for x in self.shots:
              component=cpt.loadFromShot(x)
-             liste=component.findElement([],cpt.LangmuirProbe)
+             liste=component.findElement(cpt.LangmuirProbe)
              z=[value for value in liste if value.name==self.langmuirname][0]
              result=z.calculateTime(x,float(self.ui.timeStart.text()),float(self.ui.timeStop.text()),float(self.ui.timeStep.text()),param=param)
              print result
@@ -220,7 +220,8 @@ def populateTree(componentList):
         if component.children==[]:
             itemList.append(item)
         else:
-            item.appendRow(populateTree(component.children))
+            for x in populateTree(component.children):
+                item.appendRow(x)
             itemList.append(item)
     return itemList
     
@@ -371,7 +372,8 @@ class gilgameshManager(QMainWindow, Ui_gilgamesh):
     def addShot(self,shot):
         gil.sm.wrapper.addShotMapping(shot)
         gil.sm.addShot(shot)
-        cpt.attachShot('Centralv1',[shot])
+        present=cpt.present()
+        cpt.attachShot(present,[shot])
         self.loadDB()
         
     
